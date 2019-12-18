@@ -25,7 +25,7 @@ class PodcastCell: UITableViewCell {
         // set image for recipe
         
         // use a capture list e.g. [weak self] or [unowned self] to break strong or (retain) reference cycle
-    podcastImage.getImage(with: podcast.artworkUrl100) { [weak self] (result) in
+    podcastImage.getImage(with: podcast.artworkUrl100 ?? "") { [weak self] (result) in
             switch result {
             case .failure:
                 DispatchQueue.main.async {

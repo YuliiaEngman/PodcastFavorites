@@ -33,7 +33,7 @@ struct PodcastSearchAPI {
                     // always decode top level struct from thr model
                     // if in our model we have only 1 struct - it will be an array
                     // but if it is a higher on it should be just (includes array)
-                    let podcasts = try JSONDecoder().decode(PosdcastSearch.self, from: data)
+                    let podcasts = try JSONDecoder().decode(PodcastSearch.self, from: data)
                     
                    // let podcasts = searchResults
  
@@ -45,7 +45,7 @@ struct PodcastSearchAPI {
         }
     }
     
-    static func postFavoritePodcast(favoritePodcast: FavoritePodcast, completion: @escaping (Result<Bool, AppError>) -> ()) {
+    static func postFavoritePodcast(favoritePodcast: Podcast, completion: @escaping (Result<Bool, AppError>) -> ()) {
       
       let endpointURLString = "https://5c2e2a592fffe80014bd6904.mockapi.io/api/v1/favorites"
       
@@ -91,7 +91,7 @@ struct PodcastSearchAPI {
     
     
 //     GET request: to get all favorites
-    static func fetchFavorites(completion: @escaping (Result<[FavoritePodcast], AppError>) -> ()) {
+    static func fetchFavorites(completion: @escaping (Result<[Podcast], AppError>) -> ()) {
 
       let favoritsURLString = "https://5c2e2a592fffe80014bd6904.mockapi.io/api/v1/favorites"
 
@@ -108,7 +108,7 @@ struct PodcastSearchAPI {
           completion(.failure(.networkClientError(appError)))
         case .success(let data):
           do {
-            let favorits = try JSONDecoder().decode([FavoritePodcast].self, from: data)
+            let favorits = try JSONDecoder().decode([Podcast].self, from: data)
             completion(.success(favorits))
           } catch {
             completion(.failure(.decodingError(error)))

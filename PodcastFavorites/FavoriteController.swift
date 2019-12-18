@@ -14,7 +14,7 @@ class FavoriteController: UIViewController {
     
     private var refreshControl: UIRefreshControl!
     
-    var favoritePodcast = [FavoritePodcast]() {
+    var favoritePodcast = [Podcast]() {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -31,15 +31,19 @@ class FavoriteController: UIViewController {
     }
     
     func configureRefreshControl() {
-      refreshControl = UIRefreshControl()
-      tableView.refreshControl = refreshControl
-
-      // programmable target-action using objective-c runtime api
-      refreshControl.addTarget(self, action: #selector(fetchFavorites), for: .valueChanged)
+        refreshControl = UIRefreshControl()
+        tableView.refreshControl = refreshControl
+        
+        // programmable target-action using objective-c runtime api
+        refreshControl.addTarget(self, action: #selector(fetchFavorites), for: .valueChanged)
     }
     @objc
     private func fetchFavorites() {
         PodcastSearchAPI.fetchFavorites {[weak self] (result) in
+            // stop refresh control and hide
+            DispatchQueue.main.async {
+                self?.refreshControl.endRefreshing()
+            }
             switch result {
             case .failure(let appError):
                 DispatchQueue.main.async {
@@ -49,6 +53,14 @@ class FavoriteController: UIViewController {
                 self?.favoritePodcast = podcasts.filter { $0.favoritedBy == "Yuliia" }
             }
         }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let detailVC = segue.destination as? DetailViewController, let indexPath = tableView.indexPathForSelectedRow else {
+            fatalError("could not downcast to DetailViewController")
+        }
+        let singlePodcast = favoritePodcast[indexPath.row]
+        detailVC.onePodcast = singlePodcast
     }
     
 }

@@ -46,11 +46,14 @@ class DetailViewController: UIViewController {
     @IBAction func favoriteButtonPressed(_ sender: UIBarButtonItem) {
         sender.isEnabled = false
         
-        guard let onePodcast = onePodcast else {
+        guard let anyPodcast = onePodcast else {
             fatalError("error")
         }
         
-        let podcastPost = FavoritePodcast(trackId: onePodcast.trackId, favoritedBy: "Yuliia", collectionName: onePodcast.collectionName, artworkUrl600: onePodcast.artworkUrl600)
+        let podcastPost = Podcast(artistName: anyPodcast.artistName, trackName: anyPodcast.trackName, collectionName: anyPodcast.collectionName, artworkUrl100: anyPodcast.artworkUrl100, artworkUrl600: anyPodcast.artworkUrl600, trackId: anyPodcast.trackId, favoritedBy: "Yuliia")
+        
+//        let podcastPost = Podcast(artistName: onePodcast.artistName, trackName: onePodcast.trackName, collectionName: onePodcast.collectionName, artworkUrl100: onePodcast.artworkUrl100, artworkUrl600: onePodcast.artworkUrl600, trackId: onePodcast.trackId, favoritedBy: "Yuliia")
+//        let podcastPost = Posdcast(trackId: onePodcast.trackId, favoritedBy: "Yuliia", collectionName: onePodcast.collectionName, artworkUrl600: onePodcast.artworkUrl600)
         
     PodcastSearchAPI.postFavoritePodcast(favoritePodcast: podcastPost) { [weak self, weak sender] result in
             switch result {

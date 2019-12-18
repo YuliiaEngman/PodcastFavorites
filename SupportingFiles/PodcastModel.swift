@@ -8,23 +8,17 @@
 
 import Foundation
 
-struct PosdcastSearch: Decodable {
+struct PodcastSearch: Codable {
     let results: [Podcast]
 }
 
-struct Podcast: Decodable {
-    let artistName: String
-    let trackName: String
+struct Podcast: Codable {
+    let artistName: String?
+    let trackName: String?
     let collectionName: String // we doing search on it
-    let genres: [String]
-    let artworkUrl100: String // URL image more main VC
+    //let genres: [String]
+    let artworkUrl100: String? // URL image more main VC
     let artworkUrl600: String // URL image
-    let trackId: Int
+    let trackId: Int?
+    let favoritedBy: String?
 }
-
-
-//"genres": [
-//              "Society & Culture",
-//              "Podcasts",
-//              "History"
-//          ]
